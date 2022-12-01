@@ -2,5 +2,5 @@
   (:require [clojure.test :refer :all]
             [day-1 :refer :all]))
 
-(deftest simple-test
-  (is (= "Hello, World!!!" (blah))))
+(deftest day-1-part-1-test
+  (is (= 24000 (most-calories-carried-by-an-elf "test-input"))))
