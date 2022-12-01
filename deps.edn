@@ -1,0 +1,3 @@
+{:deps {}
+ :paths ["src/main/clojure"]
+ :aliases {:test {:extra-paths ["src/test/clojure"]}}}
