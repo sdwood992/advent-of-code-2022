@@ -2,5 +2,5 @@
   (:require [clojure.test :refer :all]
             [day-3 :refer :all]))
 
-(deftest simple-test
-  (is (= "Hello, World!!!" (blah))))
+(deftest day-3-part-1-test
+  (is (= 157 (rucksack-prioritisation "test-input"))))
