@@ -21,12 +21,21 @@
        string/split-lines
        (map check-line?)
        (map seq)
-       (map (fn [rucksack-contents]
-              [(set (take (-> rucksack-contents count (/ 2)) rucksack-contents))
-               (set (drop (-> rucksack-contents count (/ 2)) rucksack-contents))]))))
+       ))
 
 (defn rucksack-prioritisation [input]
   (->> (read-input input)
+       (map (fn [rucksack-contents]
+              [(set (take (-> rucksack-contents count (/ 2)) rucksack-contents))
+               (set (drop (-> rucksack-contents count (/ 2)) rucksack-contents))]))
+       (mapcat #(apply set/intersection %))
+       (map item->priority)
+       (apply +)))
+
+(defn rucksack-prioritisation-groups [input]
+  (->> (read-input input)
+       (map set)
+       (partition-all 3)
        (mapcat #(apply set/intersection %))
        (map item->priority)
        (apply +)))

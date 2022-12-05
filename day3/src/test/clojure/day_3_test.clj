@@ -4,3 +4,6 @@
 
 (deftest day-3-part-1-test
   (is (= 157 (rucksack-prioritisation "test-input"))))
+
+(deftest day-3-part-2-test
+  (is (= 70 (rucksack-prioritisation-groups "test-input"))))
