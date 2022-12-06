@@ -20,8 +20,7 @@
        slurp
        string/split-lines
        (map check-line?)
-       (map seq)
-       ))
+       (map seq)))
 
 (defn rucksack-prioritisation [input]
   (->> (read-input input)
