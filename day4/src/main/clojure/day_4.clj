@@ -18,11 +18,18 @@
                 [(explode pair-1)
                  (explode pair-2)])))))
 
-(defn overalapping-assignments [input]
+(defn complete-overalapping-assignments [input]
   (->> (read-input input)
        (filter (fn [[assignments-1 assignments-2]]
                  (some nil? [(seq (set/difference assignments-1 assignments-2))
                              (seq (set/difference assignments-2 assignments-1))])))
+       count))
+
+
+(defn any-overalapping-assignments [input]
+  (->> (read-input input)
+       (filter (fn [[assignments-1 assignments-2]]
+              (seq (set/intersection assignments-1 assignments-2))))
        count))
 
 

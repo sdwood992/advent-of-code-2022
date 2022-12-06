@@ -2,5 +2,8 @@
   (:require [clojure.test :refer :all]
             [day-4 :refer :all]))
 
-(deftest simple-test
-  (is (= 2 (overalapping-assignments "test-input"))))
+(deftest day-4-part-1
+  (is (= 2 (complete-overalapping-assignments "test-input"))))
+
+(deftest day-4-part-2
+  (is (= 4 (any-overalapping-assignments "test-input"))))
