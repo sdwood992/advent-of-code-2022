@@ -3,4 +3,4 @@
             [day-4 :refer :all]))
 
 (deftest simple-test
-  (is (= "Hello, World!!!" (blah))))
+  (is (= 2 (overalapping-assignments "test-input"))))
