@@ -32,19 +32,30 @@
                              :from           from
                              :to             to})) raw-instructions)}))
 
-(defn rearrange-stacks [input]
+(defn rearrange-stacks [input move-fn]
   (let [{:keys [stacks instructions]} (read-input input)]
     (->> instructions
          (reduce
-           (fn [stack {:keys [number-to-move from to] :as _instruction}]
-             (-> stack
-                 (update to (partial concat (reverse (take number-to-move (get stack from)))))
-                 (update from (partial drop number-to-move))))
+           move-fn
            stacks)
          (sort-by key)
          (map (comp first val))
-         (apply str))
-    ))
+         (apply str))))
+
+(defn rearrange-stacks-one-at-a-time [input]
+  (rearrange-stacks input (fn [stack {:keys [number-to-move from to] :as _instruction}]
+                            (-> stack
+                                (update to (partial concat (reverse (take number-to-move (get stack from)))))
+                                (update from (partial drop number-to-move))))))
+
+
+
+
+(defn rearrange-stacks-all-at-once [input]
+  (rearrange-stacks input (fn [stack {:keys [number-to-move from to] :as _instruction}]
+                            (-> stack
+                                (update to (partial concat (take number-to-move (get stack from))))
+                                (update from (partial drop number-to-move))))))
 
 
 
