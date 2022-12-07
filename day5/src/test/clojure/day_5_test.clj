@@ -2,5 +2,5 @@
   (:require [clojure.test :refer :all]
             [day-5 :refer :all]))
 
-(deftest simple-test
-  (is (= "Hello, World!!!" (blah))))
+(deftest day-5-part-1-test
+  (is (= "CMZ" (rearrange-stacks "test-input"))))
