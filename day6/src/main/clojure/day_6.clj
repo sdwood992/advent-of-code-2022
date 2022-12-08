@@ -7,21 +7,21 @@
       io/resource
       slurp))
 
-(defn start-of-packet-marker [data-buffer]
+(defn start-of-packet-marker [data-buffer marker-size]
   (->> data-buffer
-       (partition 4 1)
+       (partition marker-size 1)
        (reduce
          (fn [acc buffer-segment]
-           (if (= 4 (-> buffer-segment distinct count))
-             (reduced (+ acc 4))
+           (if (= marker-size (-> buffer-segment distinct count))
+             (reduced (+ acc marker-size))
              (inc acc)))
          0)))
 
 
-(defn start-of-packet-marker-from-file [input-file]
-  (->> input-file
+(defn start-of-packet-marker-from-file [input-file maker-size]
+  (-> input-file
        read-input
-       start-of-packet-marker))
+       (start-of-packet-marker maker-size) ))
 
 
 
