@@ -18,9 +18,7 @@
       "cd" (if (= dir "..")
              (update acc :current-path (comp vec butlast))
              (update acc :current-path conj dir))
-      (do
-        (println "current" (:current-path acc))
-        acc))))
+      acc)))
 
 (defn process-file-line [acc line]
   (let [[[_ file-size file-name]] (re-seq #"([0-9]+) (.*)" line)]
@@ -45,30 +43,42 @@
             (command? line) (process-command-line acc line)
             (file? line) (process-file-line acc line)
             (directory? line) (process-directory-line acc line)))
-
         {:current-path []
          :file-system []})
        :file-system))
 
 
+(defn directory->sizes [file-system]
+  (let [directories (->> file-system (map :path) distinct)
+        directory->files (reduce (fn [acc directory]
+                                   (let [things-in-directory (filter (fn [{:keys [path]}]
+                                                                       (let [truncated-path (take (count directory) path)]
+                                                                         (= truncated-path directory)))
+                                                                     file-system)]
+                                     (assoc acc directory things-in-directory)))
+                                 {}
+                                 directories)]
+    (reduce-kv
+      (fn [acc directory-path files]
+        (assoc acc directory-path (transduce (map :size) + 0 files)))
+      {}
+      directory->files)))
 
 (defn total-size-of-at-most-100000-directories [input]
-  (let [file-system (read-input input)
-        directories (->> file-system (map :path) distinct)
-        directory->files (reduce (fn [acc directory]
-                                  (let [things-in-directory (filter (fn [{:keys [path]}]
-                                                                      (let [truncated-path (take (count directory) path)]
-                                                                        (= truncated-path directory)))
-                                                                    file-system)]
-                                    (assoc acc directory things-in-directory)))
-                                {}
-                                directories)
-        directory->sizes (reduce-kv
-                           (fn [acc directory-path files]
-                             (assoc acc directory-path (transduce (map :size) + 0 files)))
-                           {}
-                           directory->files)]
+  (->> (read-input input)
+       directory->sizes
+       (filter #(-> % val (<= 100000)))
+       vals
+       (reduce +)))
+
+
+(defn smallest-directory-to-free-enough-space [input]
+  (let [directory->sizes (->> (read-input input)
+                              directory->sizes)
+        free-space (- 70000000 (directory->sizes ["/"]))
+        space-to-find (- 30000000 free-space)]
     (->> directory->sizes
-         (filter #(-> % val (<= 100000)))
-         vals
-         (reduce +))))
+         (remove #(-> % second (< space-to-find)))
+         (sort-by second)
+         first
+         second)))

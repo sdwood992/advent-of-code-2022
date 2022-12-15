@@ -7,4 +7,4 @@
 
 
 (deftest day-7-part-2-test
-  (is (= 24933642 (total-size-of-at-most-100000-directories "test-input"))))
+  (is (= 24933642 (smallest-directory-to-free-enough-space "test-input"))))
