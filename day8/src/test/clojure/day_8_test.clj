@@ -3,4 +3,4 @@
             [day-8 :refer :all]))
 
 (deftest simple-test
-  (is (= "Hello, World!!!" (blah))))
+  (is (= 21 (visible-trees "test-input"))))
